@@ -270,7 +270,12 @@ module SyntaxTree
 
       def parse_selectors(selectors)
         css = selectors + " {}"
-        Parser.new(css).parse.rules.first.selectors
+        parser = Parser.new(css)
+        stylesheet = parser.parse
+
+        assert_empty(parser.errors)
+
+        stylesheet.rules.first.selectors
       end
     end
   end
