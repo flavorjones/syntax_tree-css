@@ -295,7 +295,14 @@ module SyntaxTree
       end
 
       def parse
-        selector_list
+        selector_list.tap do
+          unless EOFToken === (token = tokens.peek)
+            message = sprintf("Unexpected token '%s' at character %d",
+                              token.value,
+                              token.location.to_range.begin + 1)
+            raise ParseError.new(message)
+          end
+        end
       end
 
       private

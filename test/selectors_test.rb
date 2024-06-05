@@ -127,6 +127,14 @@ module SyntaxTree
           end
         end
 
+        it "raises an error for an invalid selector" do
+          e = assert_raises(Selectors::ParseError) do
+            parse_selectors("div.flex::first-line.xl")
+            # the error is at ".xl"              ^
+          end
+          assert_equal("Unexpected token '.' at character 21", e.message)
+        end
+
         it "parses a complex selector" do
           actual = parse_selectors("section>table")
 
